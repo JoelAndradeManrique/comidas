@@ -6,7 +6,7 @@ session_start();
 if (isset($_SESSION['user_id'])) {
     // ...PERO NO es porque se acaba de loguear ahorita mismo (queremos ver la alerta)
     if (!isset($_SESSION['login_success'])) {
-        header('Location: plan.php');
+        header('Location: sugerencias.php');
         exit;
     }
 }
@@ -90,7 +90,7 @@ unset($_SESSION['old_email']); // Limpiar para la próxima
                 showConfirmButton: false
             }).then(() => {
                 // Cuando termina la alerta, redirige a PLAN
-                window.location.href = 'plan.php';
+                window.location.href = 'sugerencias.php';
             });
             // Importante: Borramos la bandera para que si recarga no salga de nuevo
             <?php unset($_SESSION['login_success']); ?>

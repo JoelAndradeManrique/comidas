@@ -3,7 +3,9 @@ session_start();
 require_once '../config/db.php';
 
 // SEGURIDAD
+// AL INICIO DE views/editor_comidas.php
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
+    // Si no es admin, lo sacamos de aquí
     header('Location: plan.php');
     exit;
 }
