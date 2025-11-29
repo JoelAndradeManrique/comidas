@@ -109,12 +109,21 @@ foreach ($resultados_semana as $fila) {
                     
                     <?php if ($comida): ?>
                             <p style="font-weight: bold; font-size: 1.1em;"><?php echo htmlspecialchars($comida['nombre']); ?></p>
-                            <p style="font-size: 0.9em; color: #666;"><?php echo htmlspecialchars($comida['ingredientes']); ?></p>
-                            
-                            <a href="seleccion_comidas.php?fecha=<?php echo $fecha_actual; ?>&tiempo=<?php echo $tiempo; ?>" 
-                            class="editar-btn" style="text-decoration: none; display:inline-block; margin-top:5px;">
-                            Cambiar
-                            </a>
+                                <p style="font-size: 0.9em; color: #666;"><?php echo htmlspecialchars($comida['ingredientes']); ?></p>
+                                
+                                <div style="margin-top: 8px;">
+                                    <a href="seleccion_comidas.php?fecha=<?php echo $fecha_actual; ?>&tiempo=<?php echo $tiempo; ?>" 
+                                    class="editar-btn" style="text-decoration: none;">
+                                    Cambiar
+                                    </a>
+
+                                    <a href="../api/eliminar_plan.php?id=<?php echo $comida['id']; ?>&fecha=<?php echo $fecha_actual; ?>" 
+                                    class="editar-btn" 
+                                    style="background-color: #dc3545; margin-left: 5px; text-decoration: none;"
+                                    onclick="return confirm('¿Quitar esta comida del plan?');">
+                                    🗑️
+                                    </a>
+                                </div>
                         
                         <?php else: ?>
                             <p class="sin-asignar">No has planeado nada aún.</p>

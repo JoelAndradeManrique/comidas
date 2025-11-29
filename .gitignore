@@ -1,0 +1,13 @@
+# Dependencias de Composer (Esto se descarga solo con 'composer install')
+/vendor/
+
+# Archivos de Configuración con CLAVES (¡Súper Importante!)
+config/db.php
+
+# Archivos de sistema operativo (Basura)
+.DS_Store
+Thumbs.db
+
+# Archivos de editores de código (Opcional, para no subir tus configs de VSCode)
+.vscode/
+.idea/
