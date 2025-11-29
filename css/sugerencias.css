@@ -1,106 +1,132 @@
-/* Espaciado bajo el header */
+/* config/css/sugerencias.css */
+
+/* --- RESET & LAYOUT --- */
+* {
+    box-sizing: border-box; /* VITAL: Evita que el padding sume ancho y cause scroll */
+}
+
+body {
+    background-color: #f9fafb;
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    color: #333;
+    margin: 0;
+    overflow-x: hidden; /* Asegura que no haya scroll horizontal en el body */
+}
+
 main {
-    padding: 20px;
-    margin-top: 20px;
+    width: 95%; /* Usamos porcentaje en lugar de fijo para que respire en móviles */
+    max-width: 1200px; /* Tope máximo */
+    margin: 30px auto; /* Centrado */
+    padding-bottom: 50px;
 }
 
-.title {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #333;
-}
+/* --- TEXTOS --- */
+.header-content { text-align: center; margin-bottom: 40px; }
+.title { font-size: 2.5rem; color: #2c3e50; margin-bottom: 10px; font-weight: 800; }
+.subtitle { color: #666; font-size: 1.1rem; }
 
-/* Filtros (chips) */
-.filtros {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
+/* --- FILTROS --- */
+.filtros { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
 .filtro {
-    padding: 8px 18px;
-    border-radius: 20px;
-    border: 1px solid #4CAF50;
-    background: white;
-    cursor: pointer;
-    transition: .3s;
-    font-weight: bold;
-    color: #4CAF50;
+    text-decoration: none; padding: 8px 20px; border-radius: 50px;
+    background-color: white; color: #555; border: 1px solid #ddd;
+    font-weight: 600; transition: all 0.3s;
 }
+.filtro:hover { border-color: #27ae60; color: #27ae60; }
+.filtro.active { background-color: #27ae60; color: white; border-color: #27ae60; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3); }
 
-.filtro.active,
-.filtro:hover {
-    background: #4CAF50;
-    color: white;
-}
-
-/* Botón para regenerar sugerencias */
-.regen-box {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 25px;
-}
-
+/* --- BOTÓN REGENERAR --- */
+.regen-box { text-align: center; margin-bottom: 40px; }
 .regen-btn {
-    padding: 10px 20px;
-    background: #ffa726;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: .3s;
+    background: #ff9f43; color: white; border: none; padding: 10px 20px;
+    border-radius: 8px; cursor: pointer; font-weight: bold;
+    box-shadow: 0 4px 0 #e67e22; /* Efecto 3D sutil */
+    transition: transform 0.1s;
 }
+.regen-btn:active { transform: translateY(4px); box-shadow: none; }
 
-.regen-btn:hover {
-    background: #fb8c00;
-}
-
-/* Cards */
+/* --- GRID SYSTEM (SOLUCIÓN AL DESBORDAMIENTO) --- */
 .sugerencias-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    /* Ajusta automáticamente columnas de mínimo 300px */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    width: 100%; /* Asegura que no exceda el contenedor padre */
 }
 
+/* --- TARJETA --- */
 .card {
+    background: white; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
+    display: flex; flex-direction: column;
+}
+.card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+/* Imagen */
+.card-image-container { position: relative; height: 180px; }
+.card img { width: 100%; height: 100%; object-fit: cover; }
+.category-badge {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(0,0,0,0.7); color: white;
+    padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold;
+}
+
+/* Info */
+.info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+.info h3 { margin: 0 0 10px 0; font-size: 1.25rem; color: #2c3e50; }
+.meta-info { display: flex; gap: 15px; font-size: 0.85rem; color: #7f8c8d; margin-bottom: 10px; }
+.ingredients { font-size: 0.9rem; color: #666; margin-bottom: 20px; line-height: 1.4; height: 40px; overflow: hidden; }
+
+/* --- ESTILIZADO DE INPUTS (LO QUE PEDISTE) --- */
+.card-actions { margin-top: auto; }
+
+.input-group {
     display: flex;
-    background: white;
-    padding: 15px;
-    border-radius: 15px;
-    gap: 15px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
-.card img {
-    width: 150px;
-    height: 150px;
-    border-radius: 12px;
-    object-fit: cover;
-}
-
-.info h3 {
-    margin: 0 0 8px;
-    color: #333;
-}
-
-.info p {
-    margin-bottom: 6px;
-    color: #555;
-}
-
-.btn {
-    margin-top: 10px;
-    padding: 8px 15px;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
+.form-control {
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* Bordes suaves */
+    background-color: #fdfdfd;
+    font-size: 0.9rem;
+    color: #444;
+    outline: none;
+    transition: border 0.3s, box-shadow 0.3s;
+    width: 100%;
     cursor: pointer;
-    transition: .3s;
 }
 
-.btn:hover {
-    background: #3c8d41;
+/* Estilo específico para fecha */
+.date-input {
+    flex: 1.2; /* Ocupa un poco más de espacio que el select */
+    font-family: inherit;
 }
+
+/* Estilo específico para Select */
+.select-input {
+    flex: 1;
+    appearance: none; /* Quita la flecha fea por defecto del navegador */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right .7em top 50%;
+    background-size: .65em auto;
+}
+
+.form-control:focus {
+    border-color: #27ae60;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1); /* Resplandor verde al hacer click */
+    background-color: white;
+}
+
+.btn-reservar {
+    width: 100%;
+    background-color: #2c3e50;
+    color: white;
+    border: none; padding: 12px; border-radius: 8px;
+    font-weight: bold; cursor: pointer;
+    transition: background 0.3s;
+}
+.btn-reservar:hover { background-color: #34495e; }

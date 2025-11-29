@@ -1,111 +1,263 @@
+/* config/css/ingredientes.css */
+
+/* --- LAYOUT PRINCIPAL (DIVISIÓN DE PANTALLA) --- */
+* { box-sizing: border-box; }
+
 body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', 'Roboto', serif; /* Serif para toque elegante */
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #f6f6f6;
 }
 
-/* ----------- CONTENEDOR GENERAL ---------- */
-.ingredients-container {
-    width: 90%;
-    max-width: 900px;
-    margin: 120px auto 40px auto;
+.main-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr; /* El chef ocupa menos, la lista más */
+    gap: 50px;
+    align-items: center; /* Centrado vertical */
+    min-height: 80vh; /* Ocupa buena parte de la pantalla */
 }
 
-.ingredients-container h2 {
-    margin-bottom: 5px;
+/* Responsivo para móvil */
+@media (max-width: 900px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .chef-area { order: 2; text-align: center; } /* El chef baja en móvil */
+    .list-area { order: 1; }
 }
 
-.desc {
-    color: #666;
-    margin-bottom: 25px;
-}
-
-/* ----------- PANEL PRINCIPAL ---------- */
-.ingredients-panel {
-    background: #fff;
-    padding: 25px 30px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-}
-
-/* ----------- FORM PARA AGREGAR ---------- */
-.ingredient-form {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-.ingredient-form input {
-    flex: 1;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-}
-
-.ingredient-form button {
-    padding: 12px 18px;
-    background: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.ingredient-form button:hover {
-    background: #43a047;
-}
-
-/* ----------- LISTA DE INGREDIENTES ---------- */
-.ingredients-list {
+/* --- COLUMNA IZQUIERDA: CHEF --- */
+.chef-area {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    align-items: center;
+    position: relative;
 }
 
-.ingredient-item {
+.chef-img {
+    width: 80%;
+    max-width: 400px;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+    transition: transform 0.3s ease;
+}
+
+.chef-img:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+
+/* Burbuja de diálogo estilo cómic/moderno */
+.speech-bubble {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 20px;
+    border-bottom-left-radius: 0; /* Pico de la burbuja */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    max-width: 350px;
+    position: relative;
+    border: 2px solid #2c3e50;
+}
+
+.speech-bubble h3 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.speech-bubble p {
+    margin: 0;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* --- COLUMNA DERECHA: LA COMANDA --- */
+.list-area {
+    display: flex;
+    justify-content: center;
+}
+
+.paper-sheet {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    border-radius: 4px; /* Bordes casi rectos como papel */
+    box-shadow: 
+        0 1px 4px rgba(0, 0, 0, 0.05), 
+        0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra elegante */
+    position: relative;
+}
+
+/* Efecto visual de "varias hojas" apiladas */
+.paper-sheet::before {
+    content: '';
+    position: absolute;
+    top: 5px; left: 5px; right: 5px; bottom: -5px;
+    background: white;
+    z-index: -1;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* HEADER DE LA LISTA */
+.sheet-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    background: #fafafa;
-    padding: 12px 15px;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
+    align-items: flex-start;
+    margin-bottom: 10px;
 }
 
-.ingredient-item label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px;
+.sheet-header h2 {
+    margin: 0;
+    font-size: 2rem;
+    color: #222;
+    font-family: 'Playfair Display', serif; /* Fuente elegante si está disponible */
 }
 
-.ingredient-item input[type="checkbox"] {
-    transform: scale(1.3);
-    cursor: pointer;
+.date-range {
+    color: #777;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 5px;
+    display: block;
 }
 
-.ingredient-item .delete {
-    background: #e53935;
+.btn-print {
+    background: #2c3e50;
     color: white;
     border: none;
-    padding: 5px 10px;
-    font-size: 18px;
-    border-radius: 6px;
+    padding: 8px 15px;
+    border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
 }
 
-.ingredient-item .delete:hover {
-    background: #c62828;
+.btn-print:hover {
+    background: #34495e;
 }
 
-/* ----------- RESPONSIVE ---------- */
-@media (max-width: 600px) {
-    .ingredient-form {
-        flex-direction: column;
-    }
+.divider {
+    border: 0;
+    border-top: 2px dashed #ddd; /* Línea de corte */
+    margin: 20px 0;
+}
 
-    .ingredient-form button {
-        width: 100%;
-    }
+/* --- CHECKLIST ESTILIZADO --- */
+.shopping-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.shopping-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.shopping-list li:hover {
+    background-color: #fafafa;
+    padding-left: 10px;
+}
+
+/* Checkbox Personalizado (El secreto del diseño) */
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #333;
+    user-select: none;
+}
+
+/* Ocultar checkbox default */
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Crear checkbox nuevo */
+.checkmark {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+/* Al hacer hover */
+.checkbox-container:hover input ~ .checkmark {
+    border-color: #27ae60;
+}
+
+/* Al marcar */
+.checkbox-container input:checked ~ .checkmark {
+    background-color: #27ae60;
+    border-color: #27ae60;
+}
+
+/* La palomita (checkmark icon) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Efecto tachado en el texto */
+.checkbox-container input:checked {
+    color: #aaa;
+    text-decoration: line-through;
+}
+
+/* Footer de la hoja */
+.sheet-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.8rem;
+    color: #bbb;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+}
+.empty-state a { color: #27ae60; font-weight: bold; }
+
+/* OCULTAR ELEMENTOS AL IMPRIMIR */
+@media print {
+    header, .chef-area, .btn-print { display: none; }
+    .main-container { display: block; }
+    .paper-sheet { box-shadow: none; border: none; }
+    body { background: white; }
 }

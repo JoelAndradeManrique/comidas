@@ -2,13 +2,13 @@
 session_start();
 require_once '../config/db.php';
 
-// SEGURIDAD: Si no es Admin, lo mandamos a su plan
+// SEGURIDAD
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
     header('Location: plan.php');
     exit;
 }
 
-// LOGICA DE EDICIÓN: Si presionaron "Editar" abajo, traemos los datos de ese platillo
+// LOGICA DE EDICIÓN
 $platillo_editar = [
     'id' => '', 'nombre' => '', 'categoria' => 'General', 'ingredientes' => '', 'imagen_url' => ''
 ];
@@ -22,7 +22,7 @@ if (isset($_GET['editar_id'])) {
     }
 }
 
-// LOGICA DE LISTADO: Traer todo el menú
+// LOGICA LISTADO
 $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -46,7 +46,7 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
 
         <section class="editor-panel">
 
-            <form class="food-form" action="../api/admin_platillos.php" method="POST">
+            <form class="food-form" action="../api/admin_platillos.php" method="POST" enctype="multipart/form-data">
                 
                 <h3><?php echo $platillo_editar['id'] ? '✏️ Editar Comida' : '➕ Crear Nueva Comida'; ?></h3>
 
@@ -57,7 +57,7 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
                        value="<?php echo htmlspecialchars($platillo_editar['nombre']); ?>" 
                        placeholder="Ej. Ensalada con pollo">
 
-                <label>Categoría (Etiqueta)</label>
+                <label>Categoría</label>
                 <select name="categoria">
                     <option value="General" <?php echo $platillo_editar['categoria']=='General'?'selected':''; ?>>General</option>
                     <option value="Rápido" <?php echo $platillo_editar['categoria']=='Rápido'?'selected':''; ?>>Rápido</option>
@@ -65,10 +65,23 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
                     <option value="Económico" <?php echo $platillo_editar['categoria']=='Económico'?'selected':''; ?>>Económico</option>
                 </select>
 
-                <label>URL de la Imagen</label>
+                <label>Imagen del Platillo</label>
+                
+                <div style="background: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px dashed #ccc; margin-bottom: 10px;">
+                    <p style="margin: 0 0 5px 0; font-size: 0.9em; color: #666;">📁 Subir archivo desde tu equipo:</p>
+                    <input type="file" name="imagen_archivo" accept=".jpg, .jpeg, .png">
+                </div>
+
+                <p style="margin: 5px 0; font-size: 0.85em; color: #999; text-align: center;">--- O ---</p>
+                
                 <input type="text" name="imagen_url" 
                        value="<?php echo htmlspecialchars($platillo_editar['imagen_url']); ?>" 
-                       placeholder="Ej. https://sitio.com/foto.jpg">
+                       placeholder="Pegar URL de internet (opcional)">
+                
+                <?php if($platillo_editar['imagen_url']): ?>
+                    <p style="font-size: 0.8em; color: green; margin-top: -5px;">✔ Imagen actual registrada</p>
+                <?php endif; ?>
+
 
                 <label>Ingredientes</label>
                 <textarea name="ingredientes" rows="4" required placeholder="Ej. pollo, lechuga..."><?php echo htmlspecialchars($platillo_editar['ingredientes']); ?></textarea>
@@ -78,7 +91,7 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
                 </button>
                 
                 <?php if($platillo_editar['id']): ?>
-                    <a href="editor_comidas.php" style="display:block; text-align:center; margin-top:10px; color: red;">Cancelar Edición</a>
+                    <a href="editor_comidas.php" style="display:block; text-align:center; margin-top:10px; color: red; text-decoration:none;">Cancelar Edición</a>
                 <?php endif; ?>
             </form>
 
@@ -87,17 +100,20 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
 
                 <?php foreach ($lista_platillos as $p): ?>
                     <div class="food-item">
-                        <div>
+                        <?php $thumb = !empty($p['imagen_url']) ? $p['imagen_url'] : 'https://via.placeholder.com/50'; ?>
+                        <img src="<?php echo $thumb; ?>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
+
+                        <div style="flex-grow: 1;">
                             <strong><?php echo htmlspecialchars($p['nombre']); ?></strong>
                             <p style="font-size: 0.8em; color: #666;"><?php echo htmlspecialchars($p['categoria']); ?></p>
                         </div>
                         <div class="actions">
-                            <a href="?editar_id=<?php echo $p['id']; ?>" class="edit">Editar</a>
+                            <a href="?editar_id=<?php echo $p['id']; ?>" class="edit">✏️</a>
                             
                             <a href="../api/admin_platillos.php?action=delete&id=<?php echo $p['id']; ?>" 
                                class="delete" 
-                               onclick="return confirm('¿Seguro que quieres borrar este platillo?');">
-                               Eliminar
+                               onclick="return confirm('¿Borrar <?php echo htmlspecialchars($p['nombre']); ?>?');">
+                               🗑️
                             </a>
                         </div>
                     </div>

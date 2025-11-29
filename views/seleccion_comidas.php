@@ -95,8 +95,10 @@ $platillos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php if (count($platillos) > 0): ?>
                 <?php foreach ($platillos as $p): ?>
                     <div class="card">
-                        <?php $img = $p['imagen_url'] ? $p['imagen_url'] : 'https://via.placeholder.com/120?text=' . substr($p['nombre'], 0, 1); ?>
-                        <img src="<?php echo $img; ?>" alt="Comida">
+                            <?php 
+                                // Usamos una foto bonita de Unsplash si no hay URL propia
+                                $img = !empty($p['imagen_url']) ? $p['imagen_url'] : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=60'; 
+                            ?>                        <img src="<?php echo $img; ?>" alt="Comida">
                         
                         <div class="info">
                             <h3><?php echo htmlspecialchars($p['nombre']); ?></h3>
