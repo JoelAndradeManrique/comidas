@@ -1,0 +1,127 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f6f6f6;
+}
+
+/* ---------- Contenedor general ---------- */
+.editor-container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 120px auto 40px auto;
+}
+
+.editor-container h2 {
+    margin-bottom: 5px;
+}
+
+.desc {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* ---------- Panel del editor ---------- */
+.editor-panel {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 30px;
+}
+
+/* ---------- Formulario ---------- */
+.food-form {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.food-form h3 {
+    margin-top: 0;
+}
+
+.food-form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.food-form input,
+.food-form select,
+.food-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+}
+
+.btn-save {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-save:hover {
+    background: #43a047;
+}
+
+/* ---------- Lista de comidas ---------- */
+.food-list {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.food-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.food-item:last-child {
+    border-bottom: none;
+}
+
+.actions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.edit {
+    background: #2196f3;
+    color: white;
+}
+
+.edit:hover {
+    background: #1976d2;
+}
+
+.delete {
+    background: #e53935;
+    color: white;
+    margin-left: 8px;
+}
+
+.delete:hover {
+    background: #c62828;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .editor-panel {
+        grid-template-columns: 1fr;
+    }
+}

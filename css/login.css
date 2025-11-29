@@ -1,0 +1,87 @@
+body {
+    margin: 0;
+    background: #f1f3f4;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --------- CONTENEDOR GENERAL --------- */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* --------- CAJA DE LOGIN --------- */
+.login-box {
+    width: 90%;
+    max-width: 380px;
+    background: #fff;
+    padding: 35px 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+}
+
+/* --------- LOGO --------- */
+.logo {
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 32px;
+    color: #4caf50;
+    font-weight: 700;
+}
+
+.subtitle {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #555;
+}
+
+/* --------- FORM --------- */
+.login-form label {
+    font-weight: 500;
+    margin-top: 10px;
+    display: block;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+/* --------- BOTÓN --------- */
+.btn-login {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    background: #4caf50;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background: #43a047;
+}
+
+/* --------- REGISTRARSE --------- */
+.register-text {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.register-text a {
+    color: #4caf50;
+    text-decoration: none;
+}
+
+.register-text a:hover {
+    text-decoration: underline;
+}
