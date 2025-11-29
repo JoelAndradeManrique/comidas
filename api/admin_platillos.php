@@ -25,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $categoria = $_POST['categoria'];
     $ingredientes = $_POST['ingredientes'];
     
+    // NUEVOS CAMPOS
+    $tiempo_prep = $_POST['tiempo_prep'] ?? 15;
+    $calorias = $_POST['calorias'] ?? 300;
     // --- LÓGICA DE IMAGEN ---
     // Por defecto, tomamos lo que haya en el input de texto (URL o la anterior)
     $imagen_final = $_POST['imagen_url']; 
@@ -60,15 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if ($id) {
-            // EDITAR
-            $sql = "UPDATE platillos SET nombre=?, categoria=?, ingredientes=?, imagen_url=? WHERE id=?";
+            // EDITAR (Agregamos los campos nuevos al SQL)
+            $sql = "UPDATE platillos SET nombre=?, categoria=?, ingredientes=?, imagen_url=?, tiempo_prep=?, calorias=? WHERE id=?";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$nombre, $categoria, $ingredientes, $imagen_final, $id]);
+            $stmt->execute([$nombre, $categoria, $ingredientes, $imagen_final, $tiempo_prep, $calorias, $id]);
         } else {
-            // CREAR
-            $sql = "INSERT INTO platillos (nombre, categoria, ingredientes, imagen_url) VALUES (?, ?, ?, ?)";
+            // CREAR (Agregamos los campos nuevos al SQL)
+            $sql = "INSERT INTO platillos (nombre, categoria, ingredientes, imagen_url, tiempo_prep, calorias) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$nombre, $categoria, $ingredientes, $imagen_final]);
+            $stmt->execute([$nombre, $categoria, $ingredientes, $imagen_final, $tiempo_prep, $calorias]);
         }
         
         header('Location: ../views/editor_comidas.php');

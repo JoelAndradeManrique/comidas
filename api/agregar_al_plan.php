@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // 1. Verificar si ya existe un plan para esa fecha/hora/usuario
-        // (Para evitar tener 2 cenas el mismo día)
         $check = $pdo->prepare("SELECT id FROM plan_semanal 
                                 WHERE usuario_id = :uid AND fecha = :fecha AND tiempo_comida = :tiempo");
         $check->execute([
@@ -31,15 +30,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':fecha' => $fecha,
             ':tiempo' => $tiempo
         ]);
+        
+        $registro_existente = $check->fetch(PDO::FETCH_ASSOC);
 
-        if ($check->rowCount() > 0) {
-            // OPCIÓN A: Si ya existe, avisamos y no hacemos nada
-            echo "<script>
-                    alert('¡Ojo! Ya tienes una comida asignada para el $tiempo del $fecha. Bórrala primero si quieres cambiarla.'); 
-                    window.location.href = '../views/sugerencias.php';
-                  </script>";
+        if ($registro_existente) {
+            // --- CASO A: ACTUALIZAR (Cambiar el platillo existente) ---
+            $sql = "UPDATE plan_semanal SET platillo_id = :pid 
+                    WHERE id = :id_plan";
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':pid' => $platillo_id,
+                ':id_plan' => $registro_existente['id']
+            ]);
+            
+            $mensaje = "¡Menú actualizado correctamente!";
+
         } else {
-            // OPCIÓN B: Insertar nuevo plan
+            // --- CASO B: INSERTAR (Crear nuevo registro) ---
             $sql = "INSERT INTO plan_semanal (usuario_id, platillo_id, fecha, tiempo_comida) 
                     VALUES (:uid, :pid, :fecha, :tiempo)";
             
@@ -50,20 +58,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':fecha' => $fecha,
                 ':tiempo' => $tiempo
             ]);
-
-            // Redirigir al Plan Semanal para que vea su comida agendada
-            echo "<script>
-                    alert('¡Agregado al plan correctamente!'); 
-                    window.location.href = '../views/plan.php';
-                  </script>";
+            
+            $mensaje = "¡Agregado al plan correctamente!";
         }
+
+        // Redirigir al Plan Semanal en la fecha correcta
+        echo "<script>
+                // alert('$mensaje'); // Opcional: Quitar si quieres que sea más fluido
+                window.location.href = '../views/plan.php?fecha=$fecha';
+              </script>";
 
     } catch (PDOException $e) {
         die("Error de base de datos: " . $e->getMessage());
     }
 
 } else {
-    // Si intentan entrar directo por URL
     header('Location: ../views/sugerencias.php');
 }
 ?>

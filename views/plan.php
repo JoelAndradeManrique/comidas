@@ -13,6 +13,10 @@ $fecha_actual = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
 $ayer = date('Y-m-d', strtotime($fecha_actual . ' -1 day'));
 $manana = date('Y-m-d', strtotime($fecha_actual . ' +1 day'));
 
+// --- VALIDACIÓN DE TIEMPO (NUEVO) ---
+// Verificamos si la fecha que estamos viendo ya pasó
+$es_pasado = ($fecha_actual < date('Y-m-d'));
+
 // --- LOGICA DIA ---
 $sql_dia = "SELECT ps.*, p.nombre, p.ingredientes 
             FROM plan_semanal ps 
@@ -78,7 +82,6 @@ foreach ($resultados_semana as $fila) {
             </div>
 
             <?php 
-            // Iconos y etiquetas para cada tiempo
             $config_tiempos = [
                 'Desayuno' => ['icono' => '🌅', 'label' => 'Mañana'],
                 'Almuerzo' => ['icono' => '☀️', 'label' => 'Mediodía'],
@@ -109,11 +112,21 @@ foreach ($resultados_semana as $fila) {
                 <?php else: ?>
                     <div class="empty-state">
                         <h3><?php echo $info['icono'] . ' ' . $tiempo; ?></h3>
-                        <p class="sin-asignar">Espacio disponible</p>
-                        <a href="seleccion_comidas.php?fecha=<?php echo $fecha_actual; ?>&tiempo=<?php echo $tiempo; ?>" 
-                           class="btn-action btn-add">
-                           + Agregar
-                        </a>
+                        
+                        <?php if ($es_pasado): ?>
+                            <p class="sin-asignar" style="color: #aaa; margin-bottom:0;">
+                                No se registró comida
+                            </p>
+                            <span style="font-size: 1.5rem; opacity: 0.3; display:block; margin-top:5px;">🚫</span>
+                        
+                        <?php else: ?>
+                            <p class="sin-asignar">Espacio disponible</p>
+                            <a href="seleccion_comidas.php?fecha=<?php echo $fecha_actual; ?>&tiempo=<?php echo $tiempo; ?>" 
+                               class="btn-action btn-add">
+                               + Agregar
+                            </a>
+                        <?php endif; ?>
+
                     </div>
                 <?php endif; ?>
 

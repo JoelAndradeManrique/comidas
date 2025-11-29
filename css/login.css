@@ -1,104 +1,144 @@
-body {
-    margin: 0;
-    background: #f1f3f4;
-    font-family: 'Poppins', sans-serif;
-}
+/* config/css/login.css */
 
-/* --------- CONTENEDOR GENERAL --------- */
-.login-container {
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5; /* Un gris muy suave y moderno */
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-/* --------- CAJA DE LOGIN --------- */
-.login-box {
-    width: 90%;
-    max-width: 380px;
-    background: #fff;
-    padding: 35px 30px;
-    border-radius: 16px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+.login-container {
+    padding: 20px;
 }
 
-/* --------- LOGO --------- */
+.login-box {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px; /* Bordes más redondeados */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Sombra suave y profunda */
+    width: 100%;
+    max-width: 420px; /* Un poco más ancho */
+    text-align: center; /* Centra títulos y enlaces */
+}
+
 .logo {
-    text-align: center;
-    margin-bottom: 5px;
-    font-size: 32px;
-    color: #4caf50;
-    font-weight: 700;
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 800;
 }
 
 .subtitle {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #555;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    font-weight: 500;
 }
 
-/* --------- FORM --------- */
+/* --- FORMULARIO CENTRADO --- */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos horizontalmente */
+    width: 100%;
+}
+
 .login-form label {
-    font-weight: 500;
-    margin-top: 10px;
     display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: left; /* Las etiquetas se ven mejor alineadas a la izquierda del input */
+    width: 100%; /* Ocupan todo el ancho disponible */
 }
 
 .login-form input {
     width: 100%;
-    padding: 12px;
-    margin-top: 6px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 15px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
 }
 
-/* --------- BOTÓN --------- */
-.btn-login {
+.login-form input:focus {
+    border-color: #27ae60;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+/* Contenedor del input de contraseña y el ojo */
+.password-container {
+    position: relative;
     width: 100%;
-    margin-top: 25px;
-    padding: 12px;
-    background: #4caf50;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: 16px;
+}
+
+.password-container input {
+    padding-right: 40px; /* Espacio para el icono del ojo */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
+    color: #888;
+    padding: 5px;
 }
 
-.btn-login:hover {
-    background: #43a047;
+/* Enlace de "Olvidaste tu contraseña?" */
+.login-form > div {
+    width: 100%;
+    text-align: right; /* Mantiene el enlace a la derecha */
+    margin-bottom: 20px;
 }
 
-/* --------- REGISTRARSE --------- */
-.register-text {
-    text-align: center;
-    margin-top: 20px;
-    color: #666;
-}
-
-.register-text a {
-    color: #4caf50;
+.login-form a {
+    color: #27ae60;
     text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s;
 }
 
-.register-text a:hover {
+.login-form a:hover {
+    color: #219150;
     text-decoration: underline;
 }
 
-.alert-error {
-    background-color: #fee2e2; /* Fondo rojito suave */
-    color: #991b1b;            /* Texto rojo oscuro */
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    text-align: center;
-    font-size: 0.9rem;
-    border: 1px solid #f87171;
-    animation: fadeIn 0.3s ease-in-out;
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+.btn-login:hover {
+    background-color: #219150;
+    transform: translateY(-2px); /* Efecto de levantar */
+}
+
+.register-text {
+    margin-top: 25px;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
+
+.register-text a {
+    color: #27ae60;
+    text-decoration: none;
+    font-weight: bold;
 }

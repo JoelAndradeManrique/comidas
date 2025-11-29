@@ -74,8 +74,8 @@ $sugerencias = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <h3><?php echo htmlspecialchars($platillo['nombre']); ?></h3>
                             
                             <div class="meta-info">
-                                <span>⏱ <?php echo rand(15, 45); ?> min</span>
-                                <span>🔥 <?php echo rand(200, 600); ?> kcal</span>
+                                <span>⏱ <?php echo $platillo['tiempo_prep'] ?? 15; ?> min</span>
+                                <span>🔥 <?php echo $platillo['calorias'] ?? 300; ?> kcal</span>
                             </div>
                             
                             <p class="ingredients">

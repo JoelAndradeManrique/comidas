@@ -25,18 +25,44 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([':uid' => $user_id, ':inicio' => $lunes, ':fin' => $domingo]);
 $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// 4. PROCESAMIENTO (Limpieza y orden)
+// 4. PROCESAMIENTO
 $lista_final = [];
+
+// DICCIONARIO MAESTRO DE INGREDIENTES
+// (Aquí puedes agregar todos los casos que quieras corregir)
+$sinonimos = [
+    'Aceite de cocina' => 'Aceite',
+    'Aceite vegetal'   => 'Aceite',
+    'Jitomate'         => 'Tomate',
+    'Jitomates'        => 'Tomate',
+    'Tomates'          => 'Tomate',
+    'Huevos'           => 'Huevo',
+    'Papas'            => 'Papa',
+    'Zanahorias'       => 'Zanahoria',
+    'Cebollas'         => 'Cebolla',
+    'Salchichas'       => 'Salchicha'
+];
+
 foreach ($resultados as $fila) {
     $ingredientes_separados = explode(',', $fila['ingredientes']);
+    
     foreach ($ingredientes_separados as $ingrediente) {
+        // Limpieza básica
         $limpio = trim($ingrediente);
-        $limpio = ucfirst(strtolower($limpio)); 
+        $limpio = ucfirst(strtolower($limpio)); // "Jitomate"
+        
+        // 4.5 UNIFICACIÓN DE SINÓNIMOS
+        // Si la palabra está en nuestro diccionario, la cambiamos por la estándar
+        if (array_key_exists($limpio, $sinonimos)) {
+            $limpio = $sinonimos[$limpio];
+        }
+
         if (!empty($limpio)) {
             $lista_final[] = $limpio;
         }
     }
 }
+
 $lista_compras = array_unique($lista_final);
 sort($lista_compras);
 ?>
@@ -57,8 +83,9 @@ sort($lista_compras);
     <main class="main-container">
 
         <section class="chef-area">
+   
             
-           <img src="../img/chef.png" class="chef-img">
+            <img src="../img/chef.png" alt="Chef" class="chef-img">
         </section>
 
         <section class="list-area">

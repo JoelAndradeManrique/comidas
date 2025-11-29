@@ -82,10 +82,19 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
                     <p style="font-size: 0.8em; color: green; margin-top: -5px;">✔ Imagen actual registrada</p>
                 <?php endif; ?>
 
-
-                <label>Ingredientes</label>
+                <div style="display: flex; gap: 15px;">
+                    <div style="flex: 1;">
+                        <label>Tiempo (min)</label>
+                        <input type="number" name="tiempo_prep" required 
+                            value="<?php echo $platillo_editar['tiempo_prep'] ?? 15; ?>">
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Calorías (kcal)</label>
+                        <input type="number" name="calorias" required 
+                            value="<?php echo $platillo_editar['calorias'] ?? 300; ?>">
+                    </div>
+                </div> <label>Ingredientes</label>
                 <textarea name="ingredientes" rows="4" required placeholder="Ej. pollo, lechuga..."><?php echo htmlspecialchars($platillo_editar['ingredientes']); ?></textarea>
-
                 <button type="submit" class="btn-save">
                     <?php echo $platillo_editar['id'] ? 'Actualizar Comida' : 'Guardar Nueva'; ?>
                 </button>
