@@ -6,11 +6,11 @@
     </div>
 
     <nav class="menu">
-        <a href="seleccion-comidas.html">Comidas</a>
-        <a href="sugerencias.html">Sugerencias</a>
-        <a href="plan.html">Plan</a>
-        <a href="editor.html">Editor</a>
-        <a href="ingredientes.html">Ingredientes</a>
+        <a href="seleccion_comidas.php">Comidas</a>
+        <a href="sugerencias.php">Sugerencias</a>
+        <a href="plan.php">Plan</a>
+        <a href="editor_comidas.php">Editor</a>
+        <a href="ingredientes.php">Ingredientes</a>
     </nav>
 
     <div class="user-section">
