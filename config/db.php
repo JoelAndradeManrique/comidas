@@ -1,15 +1,17 @@
 <?php
-// config/db.php
+// AJUSTE DE ZONA HORARIA (IMPORTANTE)
+// Esto sincroniza todo el sistema con tu hora local
+date_default_timezone_set('America/Merida'); // O 'America/Mexico_City'
+
 $host = 'localhost';
 $dbname = 'comidas';
-$username = 'root'; // Cambia esto si tienes otro usuario
-$password = '';     // Cambia esto si tienes contraseña
+$username = 'root'; 
+$password = '';     
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    // Habilitar errores para poder depurar si algo falla
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("¡Error fatal de conexión!: " . $e->getMessage());
+    die("Error de conexión: " . $e->getMessage());
 }
 ?>

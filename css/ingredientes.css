@@ -256,8 +256,70 @@ body {
 
 /* OCULTAR ELEMENTOS AL IMPRIMIR */
 @media print {
-    header, .chef-area, .btn-print { display: none; }
-    .main-container { display: block; }
-    .paper-sheet { box-shadow: none; border: none; }
-    body { background: white; }
+    
+    /* 1. DESAPARECER TODO LO QUE NO ES LA LISTA */
+    /* Usamos !important para asegurarnos que nada se resista */
+    .main-header,   /* El menú de arriba */
+    .chef-area,     /* El chef */
+    .btn-print,     /* El botón de imprimir */
+    .speech-bubble, /* El texto del chef */
+    footer          /* Si tuvieras footer */
+    {
+        display: none !important;
+        height: 0 !important;
+        width: 0 !important;
+        overflow: hidden !important;
+    }
+
+    /* 2. RESETEAR EL CUERPO DE LA PÁGINA */
+    body, html {
+        background-color: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 100% !important;
+        overflow: visible !important;
+    }
+
+    /* 3. ROMPER EL GRID (Para que la lista suba al inicio de la hoja) */
+    .main-container {
+        display: block !important; /* Ya no es grid */
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        min-height: auto !important;
+    }
+
+    .list-area {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    /* 4. LIMPIAR LA HOJA DE PAPEL (Quitar sombras y bordes) */
+    .paper-sheet {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Ocultar el efecto de "hojas apiladas" */
+    .paper-sheet::before {
+        display: none !important;
+    }
+
+    /* 5. EL TRUCO PARA LOS COLORES (Para que salgan los checks verdes) */
+    * {
+        -webkit-print-color-adjust: exact !important;   /* Chrome/Safari/Edge */
+        print-color-adjust: exact !important;           /* Firefox */
+        color-adjust: exact !important;                 /* Estándar */
+    }
+
+    /* 6. QUITAR LA URL Y FECHA DEL NAVEGADOR */
+    @page {
+        margin: 1cm; /* Margen físico limpio */
+        size: auto;  /* Auto ajusta */
+    }
 }
