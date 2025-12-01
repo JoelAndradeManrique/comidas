@@ -7,8 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass = $_POST['password'];
     $confirm = $_POST['confirm_password'];
 
+    // VALIDACIÓN: Si no coinciden
     if ($pass !== $confirm) {
-        die("Las contraseñas no coinciden.");
+        $_SESSION['error'] = "Las contraseñas no coinciden. Inténtalo de nuevo.";
+        // ¡IMPORTANTE! Regresamos con el token para que no pierda la sesión de recuperación
+        header("Location: ../views/restablecer.php?token=" . $token);
+        exit;
     }
 
     // Hash de la nueva contraseña
@@ -22,10 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare($sql);
     
     if ($stmt->execute([$new_hash, $token])) {
-        $_SESSION['error'] = "¡Contraseña actualizada! Inicia sesión."; // Reusamos la clase de alerta del login
+        // ÉXITO: Mandamos mensaje y redirigimos al LOGIN
+        $_SESSION['success'] = "¡Contraseña actualizada! Inicia sesión.";
         header('Location: ../views/login.php');
+        exit;
     } else {
-        echo "Error al actualizar.";
+        // ERROR DE BD
+        $_SESSION['error'] = "Hubo un problema al guardar. Intenta más tarde.";
+        header("Location: ../views/restablecer.php?token=" . $token);
+        exit;
     }
+} else {
+    header('Location: ../views/login.php');
+    exit;
 }
 ?>

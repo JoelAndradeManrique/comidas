@@ -20,6 +20,7 @@ if ($token) {
     <meta charset="UTF-8">
     <title>Nueva Contraseña</title>
     <link rel="stylesheet" href="../css/login.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="login-container">
@@ -33,21 +34,35 @@ if ($token) {
                     <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
                     
                     <label>Nueva contraseña</label>
-                    <input type="password" name="password" required minlength="8">
+                    <input type="password" name="password" required minlength="8" placeholder="Mínimo 8 caracteres">
                     
                     <label>Confirmar contraseña</label>
-                    <input type="password" name="confirm_password" required>
+                    <input type="password" name="confirm_password" required placeholder="Repite la contraseña">
                     
                     <button type="submit" class="btn-login">Guardar Cambios</button>
                 </form>
             
             <?php else: ?>
-                <div class="alert-error">
-                    El enlace es inválido o ha expirado.
+                <div style="text-align: center; padding: 20px;">
+                    <span style="font-size: 3rem;">🚫</span>
+                    <p style="color: #666; margin-top: 10px;">El enlace es inválido o ha expirado.</p>
                 </div>
                 <p class="register-text"><a href="olvide_password.php">Solicitar uno nuevo</a></p>
             <?php endif; ?>
         </div>
     </div>
+
+    <script>
+        <?php if (isset($_SESSION['error'])): ?>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '<?php echo $_SESSION['error']; ?>',
+                confirmButtonColor: '#d33'
+            });
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+    </script>
+
 </body>
 </html>

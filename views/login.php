@@ -62,7 +62,7 @@ unset($_SESSION['old_email']); // Limpiar para la próxima
         </div>
     </div>
 
-    <script>
+   <script>
         // 1. FUNCIÓN PARA MOSTRAR/OCULTAR CONTRASEÑA
         function togglePassword() {
             const input = document.getElementById('passwordInput');
@@ -70,37 +70,48 @@ unset($_SESSION['old_email']); // Limpiar para la próxima
             
             if (input.type === "password") {
                 input.type = "text";
-                icon.textContent = "visibility_off"; // Cambia icono a ojo tachado
+                icon.textContent = "visibility_off"; 
             } else {
                 input.type = "password";
-                icon.textContent = "visibility"; // Cambia icono a ojo normal
+                icon.textContent = "visibility"; 
             }
         }
 
         // 2. ALERTAS DE SWEETALERT
-        
-        // CASO: Login Exitoso
+
+        // --- CASO: ÉXITO GENERAL (Registro o Recuperación de Password) ---
+        // ESTE ERA EL QUE FALTABA
+        <?php if (isset($_SESSION['success'])): ?>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Excelente!',
+                text: '<?php echo $_SESSION['success']; ?>',
+                confirmButtonColor: '#27ae60',
+                confirmButtonText: 'Entendido'
+            });
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
+        // --- CASO: LOGIN EXITOSO (Especial con redirección automática) ---
         <?php if (isset($_SESSION['login_success'])): ?>
             Swal.fire({
                 icon: 'success',
                 title: '¡Bienvenido!',
                 text: 'Iniciando sesión...',
-                timer: 2000, // Espera 2 segundos
+                timer: 2000, 
                 timerProgressBar: true,
                 showConfirmButton: false
             }).then(() => {
-                // Cuando termina la alerta, redirige a PLAN
-                window.location.href = 'sugerencias.php';
+                window.location.href = 'plan.php';
             });
-            // Importante: Borramos la bandera para que si recarga no salga de nuevo
             <?php unset($_SESSION['login_success']); ?>
         <?php endif; ?>
 
-        // CASO: Error de Credenciales
+        // --- CASO: ERROR (Credenciales o Fallos) ---
         <?php if (isset($_SESSION['error'])): ?>
             Swal.fire({
                 icon: 'error',
-                title: 'Error de acceso',
+                title: 'Ups...',
                 text: '<?php echo $_SESSION['error']; ?>',
                 confirmButtonColor: '#d33',
                 confirmButtonText: 'Intentar de nuevo'
