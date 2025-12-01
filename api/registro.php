@@ -9,9 +9,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // 1. Validaciones básicas
+    // Guardamos datos previos para no borrar todo si falla
+    $_SESSION['old_nombre'] = $nombre;
+    $_SESSION['old_email'] = $email;
+
+    // 1. Validaciones
     if (empty($nombre) || empty($email) || empty($password)) {
         $_SESSION['error'] = "Todos los campos son obligatorios.";
+        header('Location: ../views/registro.php');
+        exit;
+    }
+
+    // VALIDACIÓN NUEVA: Mínimo 8 caracteres
+    if (strlen($password) < 8) {
+        $_SESSION['error'] = "La contraseña debe tener al menos 8 caracteres.";
         header('Location: ../views/registro.php');
         exit;
     }
@@ -33,9 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // 3. Crear el usuario (Hasheando password)
+        // 3. Crear el usuario
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
-        $rol = 'CLIENTE'; // Por defecto
+        $rol = 'CLIENTE';
 
         $sql = "INSERT INTO usuarios (nombre, email, password, rol) VALUES (:nombre, :email, :pass, :rol)";
         $stmt = $pdo->prepare($sql);
@@ -46,8 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':rol' => $rol
         ]);
 
-        // 4. Éxito: Lo mandamos al login para que entre
-        $_SESSION['success'] = "¡Cuenta creada! Ahora inicia sesión.";
+        // 4. Éxito
+        unset($_SESSION['old_nombre']);
+        unset($_SESSION['old_email']);
+        
+        $_SESSION['success'] = "¡Cuenta creada con éxito! Ahora inicia sesión.";
         header('Location: ../views/login.php');
 
     } catch (PDOException $e) {

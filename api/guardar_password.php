@@ -1,4 +1,5 @@
 <?php
+// api/guardar_password.php
 require '../config/db.php';
 session_start();
 
@@ -7,10 +8,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass = $_POST['password'];
     $confirm = $_POST['confirm_password'];
 
-    // VALIDACIÓN: Si no coinciden
+    // 1. VALIDACIÓN: Longitud mínima
+    if (strlen($pass) < 8) {
+        $_SESSION['error'] = "La contraseña debe tener al menos 8 caracteres.";
+        header("Location: ../views/restablecer.php?token=" . $token);
+        exit;
+    }
+
+    // 2. VALIDACIÓN: Coincidencia
     if ($pass !== $confirm) {
-        $_SESSION['error'] = "Las contraseñas no coinciden. Inténtalo de nuevo.";
-        // ¡IMPORTANTE! Regresamos con el token para que no pierda la sesión de recuperación
+        $_SESSION['error'] = "Las contraseñas no coinciden.";
         header("Location: ../views/restablecer.php?token=" . $token);
         exit;
     }
@@ -18,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Hash de la nueva contraseña
     $new_hash = password_hash($pass, PASSWORD_DEFAULT);
 
-    // Actualizar BD y borrar token
+    // Actualizar BD y borrar token (para que no se use 2 veces)
     $sql = "UPDATE usuarios 
             SET password = ?, reset_token = NULL, reset_token_expire = NULL 
             WHERE reset_token = ?";
@@ -26,12 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare($sql);
     
     if ($stmt->execute([$new_hash, $token])) {
-        // ÉXITO: Mandamos mensaje y redirigimos al LOGIN
-        $_SESSION['success'] = "¡Contraseña actualizada! Inicia sesión.";
+        // ÉXITO: Usamos 'login_success' o 'success' estándar
+        $_SESSION['success'] = "¡Contraseña actualizada correctamente! Inicia sesión.";
         header('Location: ../views/login.php');
         exit;
     } else {
-        // ERROR DE BD
         $_SESSION['error'] = "Hubo un problema al guardar. Intenta más tarde.";
         header("Location: ../views/restablecer.php?token=" . $token);
         exit;
