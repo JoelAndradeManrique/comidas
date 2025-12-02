@@ -3,16 +3,14 @@ session_start();
 require_once '../config/db.php';
 
 // SEGURIDAD
-// AL INICIO DE views/editor_comidas.php
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'ADMIN') {
-    // Si no es admin, lo sacamos de aquí
     header('Location: plan.php');
     exit;
 }
 
 // LOGICA DE EDICIÓN
 $platillo_editar = [
-    'id' => '', 'nombre' => '', 'categoria' => 'General', 'ingredientes' => '', 'imagen_url' => ''
+    'id' => '', 'nombre' => '', 'categoria' => 'General', 'ingredientes' => '', 'imagen_url' => '', 'tiempo_prep' => 15, 'calorias' => 300
 ];
 
 if (isset($_GET['editar_id'])) {
@@ -36,6 +34,7 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
     <title>Editor de Comidas (Admin)</title>
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/editor_comidas.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -95,8 +94,11 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
                         <input type="number" name="calorias" required 
                             value="<?php echo $platillo_editar['calorias'] ?? 300; ?>">
                     </div>
-                </div> <label>Ingredientes</label>
+                </div>
+
+                <label>Ingredientes</label>
                 <textarea name="ingredientes" rows="4" required placeholder="Ej. pollo, lechuga..."><?php echo htmlspecialchars($platillo_editar['ingredientes']); ?></textarea>
+
                 <button type="submit" class="btn-save">
                     <?php echo $platillo_editar['id'] ? 'Actualizar Comida' : 'Guardar Nueva'; ?>
                 </button>
@@ -109,32 +111,58 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
             <div class="food-list">
                 <h3>Catálogo Actual (<?php echo count($lista_platillos); ?>)</h3>
 
-                <?php foreach ($lista_platillos as $p): ?>
-                    <div class="food-item">
-                        <?php $thumb = !empty($p['imagen_url']) ? $p['imagen_url'] : 'https://via.placeholder.com/50'; ?>
-                        <img src="<?php echo $thumb; ?>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
+                <input type="text" id="adminSearch" 
+                       placeholder="🔍 Buscar platillo..." 
+                       style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; outline:none; background-color: #fcfcfc;">
 
-                        <div style="flex-grow: 1;">
-                            <strong><?php echo htmlspecialchars($p['nombre']); ?></strong>
-                            <p style="font-size: 0.8em; color: #666;"><?php echo htmlspecialchars($p['categoria']); ?></p>
+                <div id="listaContainer">
+                    <?php foreach ($lista_platillos as $p): ?>
+                        <div class="food-item">
+                            <?php 
+                                $thumb = !empty($p['imagen_url']) ? $p['imagen_url'] : 'https://via.placeholder.com/50'; 
+                            ?>
+                            <img src="<?php echo $thumb; ?>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
+
+                            <div style="flex-grow: 1;">
+                                <strong><?php echo htmlspecialchars($p['nombre']); ?></strong>
+                                <p style="font-size: 0.8em; color: #666;"><?php echo htmlspecialchars($p['categoria']); ?></p>
+                            </div>
+                            <div class="actions">
+                                <a href="?editar_id=<?php echo $p['id']; ?>" class="edit">✏️</a>
+                                
+                                <a href="../api/admin_platillos.php?action=delete&id=<?php echo $p['id']; ?>" 
+                                   class="delete" 
+                                   onclick="confirmarEliminar(event, this.href);">
+                                   🗑️
+                                </a>
+                            </div>
                         </div>
-                        <div class="actions">
-                            <a href="?editar_id=<?php echo $p['id']; ?>" class="edit">✏️</a>
-                            
-                            <a href="../api/admin_platillos.php?action=delete&id=<?php echo $p['id']; ?>" 
-                               class="delete" 
-                               onclick="return confirm('¿Borrar <?php echo htmlspecialchars($p['nombre']); ?>?');">
-                               🗑️
-                            </a>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
 
             </div>
 
         </section>
 
     </main>
+
+    <script>
+        const searchInput = document.getElementById('adminSearch');
+        const items = document.querySelectorAll('.food-item');
+
+        searchInput.addEventListener('keyup', function(e) {
+            const term = e.target.value.toLowerCase();
+
+            items.forEach(item => {
+                const text = item.innerText.toLowerCase();
+                if (text.includes(term)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
