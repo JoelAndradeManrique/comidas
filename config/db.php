@@ -1,6 +1,4 @@
 <?php
-// AJUSTE DE ZONA HORARIA (IMPORTANTE)
-// Esto sincroniza todo el sistema con tu hora local
 date_default_timezone_set('America/Merida'); // O 'America/Mexico_City'
 
 $host = 'localhost';

@@ -73,16 +73,6 @@ $lista_platillos = $pdo->query("SELECT * FROM platillos ORDER BY id DESC")->fetc
                     <input type="file" name="imagen_archivo" accept=".jpg, .jpeg, .png">
                 </div>
 
-                <p style="margin: 5px 0; font-size: 0.85em; color: #999; text-align: center;">--- O ---</p>
-                
-                <input type="text" name="imagen_url" 
-                       value="<?php echo htmlspecialchars($platillo_editar['imagen_url']); ?>" 
-                       placeholder="Pegar URL de internet (opcional)">
-                
-                <?php if($platillo_editar['imagen_url']): ?>
-                    <p style="font-size: 0.8em; color: green; margin-top: -5px;">✔ Imagen actual registrada</p>
-                <?php endif; ?>
-
                 <div style="display: flex; gap: 15px;">
                     <div style="flex: 1;">
                         <label>Tiempo (min)</label>
